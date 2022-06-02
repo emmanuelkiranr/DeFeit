@@ -6,7 +6,7 @@ import Upload from "../components/Upload";
 
 export default function Home() {
   const injected = new InjectedConnector();
-  const { activate, active, library: provider } = useWeb3React();
+  const { activate, active, account, library: provider } = useWeb3React();
 
   async function connect() {
     try {
@@ -25,7 +25,7 @@ export default function Home() {
 
       {active ? (
         <>
-          <Upload active={active} provider={provider} />
+          <Upload account={account} active={active} provider={provider} />
         </>
       ) : (
         <>
