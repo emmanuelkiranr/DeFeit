@@ -1,9 +1,10 @@
 import { ethers } from "ethers";
 import { useState } from "react";
 import abi from "../constants/abi";
+import QRCode from "react-qr-code";
 
 const Upload = (props) => {
-  const contractAddress = "0x9f43BBcA63d6B7D22cd9FD93b0e450183C3Cb649";
+  const contractAddress = "0x17E105B0dFDD153Da61bb3040eF53Ae4EFCa8922";
   const contractABI = abi.abi;
 
   const [name, setName] = useState("");
@@ -12,6 +13,13 @@ const Upload = (props) => {
   const [batchNum, setBatchNum] = useState("");
   const [price, setPrice] = useState("");
   const [ingredients, setIndegredients] = useState("");
+  const [index, setIndex] = useState(1);
+
+  const [value, setValue] = useState("");
+
+  const incrementIndex = () => {
+    setIndex((prevCount) => prevCount + 1);
+  };
 
   const onNameChange = (event) => {
     setName(event.target.value);
@@ -37,6 +45,7 @@ const Upload = (props) => {
     setIndegredients(event.target.value);
   };
 
+  const combinedData = props.account + ";" + index;
   async function upload() {
     const provider = props.provider;
     const signer = provider.getSigner();
@@ -46,6 +55,7 @@ const Upload = (props) => {
       signer
     );
     try {
+      console.log(props.provider);
       console.log("Uploading details");
       const uploadData = await manufacturer.setDrugDetails(
         name ? name : window.alert("Please enter all details"),
@@ -64,12 +74,19 @@ const Upload = (props) => {
       setBatchNum("");
       setPrice("");
       setIndegredients("");
+      const address = props.account;
+      console.log(address);
+      console.log(index);
+      const viewData = await manufacturer.getDrugDetails(address, index);
+      setValue(combinedData);
+      console.log(viewData.name);
+      incrementIndex();
     } catch (e) {
       console.log(e);
     }
   }
   return (
-    <div>
+    <div className="center">
       <main>
         {props.active ? (
           <div>
@@ -121,6 +138,7 @@ const Upload = (props) => {
                 Upload
               </button>
             </form>
+            <QRCode value={value} />
           </div>
         ) : (
           <>Please Connect to MetaMask</>
