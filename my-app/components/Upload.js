@@ -4,7 +4,7 @@ import abi from "../constants/abi";
 import QRCode from "react-qr-code";
 
 const Upload = (props) => {
-  const contractAddress = "0x17E105B0dFDD153Da61bb3040eF53Ae4EFCa8922";
+  const contractAddress = "0x9BFFd0bA042d40f38811Ff7e34D7D22e2FeaC223";
   const contractABI = abi.abi;
 
   const [name, setName] = useState("");
